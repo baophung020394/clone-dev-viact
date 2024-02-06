@@ -1,19 +1,22 @@
-import axiosClient from './axiosClient'
+import axiosClient from "./axiosClient";
 
 export const signIn = async (username: string, password: string) => {
   try {
-    const response = await axiosClient.post('/auth/login', { username, password })
-    return response.data
+    const response = await axiosClient.post("/auth/login", {
+      username,
+      password,
+    });
+    return response.data;
   } catch (error) {
-    throw new Error('Login failed')
+    console.log("error", error);
   }
-}
+};
 
 export const signUp = async (userData: any) => {
   try {
-    const response = await axiosClient.post('/auth/register', userData)
-    return response.data
+    const response = await axiosClient.post("/auth/register", userData);
+    return response.data;
   } catch (error) {
-    throw new Error('Registration failed')
+    console.log("error", error);
   }
-}
+};

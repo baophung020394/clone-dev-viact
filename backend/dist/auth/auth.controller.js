@@ -18,6 +18,7 @@ const responseHandler_1 = require("../helpers/responseHandler");
 const users_service_1 = require("../users/users.service");
 const auth_service_1 = require("./auth.service");
 const constants_1 = require("./constants");
+const common_2 = require("../constants/common");
 let AuthController = class AuthController {
     constructor(authService, userService) {
         this.authService = authService;
@@ -25,7 +26,13 @@ let AuthController = class AuthController {
     }
     async register(user, res) {
         const { internalCode, code, data, message } = await this.authService.register(user);
-        (0, responseHandler_1.jsonResponse)(res, message, data, code, internalCode);
+        console.log("this.authService.register(user)", await this.authService.register(user));
+        if (internalCode !== 100) {
+            (0, responseHandler_1.jsonResponse)(res, message, data, code, internalCode);
+        }
+        else {
+            (0, responseHandler_1.jsonResponse)(res, message, data, code, internalCode);
+        }
     }
     async login(username, password, res) {
         const user = await this.authService.validateUser(username, password);
@@ -34,7 +41,7 @@ let AuthController = class AuthController {
             (0, responseHandler_1.jsonResponse)(res, message, data, code, internalCode);
         }
         else {
-            throw new common_1.UnauthorizedException('Invalid credentials');
+            (0, responseHandler_1.jsonResponse)(res, common_2.RES_MESSAGE.LOGINFAIL, {}, 200, 400);
         }
     }
     async getUserByToken(accessToken, res) {
@@ -44,7 +51,7 @@ let AuthController = class AuthController {
 };
 exports.AuthController = AuthController;
 __decorate([
-    (0, common_1.Post)('register'),
+    (0, common_1.Post)("register"),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Response)()),
     __metadata("design:type", Function),
@@ -52,17 +59,17 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "register", null);
 __decorate([
-    (0, common_1.Post)('login'),
-    __param(0, (0, common_1.Body)('username')),
-    __param(1, (0, common_1.Body)('password')),
+    (0, common_1.Post)("login"),
+    __param(0, (0, common_1.Body)("username")),
+    __param(1, (0, common_1.Body)("password")),
     __param(2, (0, common_1.Response)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
 __decorate([
-    (0, common_1.Post)('verify'),
-    __param(0, (0, common_1.Body)('accessToken')),
+    (0, common_1.Post)("verify"),
+    __param(0, (0, common_1.Body)("accessToken")),
     __param(1, (0, common_1.Response)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
@@ -70,7 +77,7 @@ __decorate([
 ], AuthController.prototype, "getUserByToken", null);
 exports.AuthController = AuthController = __decorate([
     (0, constants_1.Public)(),
-    (0, common_1.Controller)('api/v1/auth'),
+    (0, common_1.Controller)("api/v1/auth"),
     __metadata("design:paramtypes", [auth_service_1.AuthService,
         users_service_1.UsersService])
 ], AuthController);

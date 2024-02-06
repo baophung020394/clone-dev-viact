@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { Injectable } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
 
-import * as bcrypt from 'bcryptjs';
-import { StatusCodes } from 'http-status-codes';
-import { RES_MESSAGE } from '../constants/common';
-import { User } from 'src/entities/user.entity';
-import { UsersService } from '../users/users.service';
+import * as bcrypt from "bcryptjs";
+import { StatusCodes } from "http-status-codes";
+import { RES_MESSAGE } from "../constants/common";
+import { User } from "src/entities/user.entity";
+import { UsersService } from "../users/users.service";
 
 @Injectable()
 export class AuthService {
@@ -20,7 +20,6 @@ export class AuthService {
     data: any;
     message: string;
   }> {
-    // return this.userService.create(user);
     try {
       const hashedPassword = await bcrypt.hash(user.password, 10);
       user.password = hashedPassword;
@@ -28,12 +27,20 @@ export class AuthService {
       if (user) {
         const result = await this.userService.create(user);
 
-        if (result?.code === StatusCodes.OK)
+        if (result?.code === StatusCodes.OK) {
           return {
             code: StatusCodes.OK,
             data: {},
             message: RES_MESSAGE.SUCCESS,
           };
+        } else {
+          return {
+            code: StatusCodes.CONFLICT,
+            internalCode: 100,
+            data: {},
+            message: RES_MESSAGE.USERISEXISTED,
+          };
+        }
       }
 
       return {
@@ -109,11 +116,11 @@ export class AuthService {
     try {
       if (accessToken) {
         const verifyToken = this.jwtService.verify(accessToken);
-        console.log('verifyToken', verifyToken);
+        console.log("verifyToken", verifyToken);
 
         if (verifyToken) {
           const user = await this.userService.findUserByToken(accessToken);
-          console.log('user', user);
+          console.log("user", user);
           if (user)
             return {
               code: StatusCodes.OK,

@@ -11,6 +11,7 @@ import { jsonResponse } from "../helpers/responseHandler";
 import { UsersService } from "../users/users.service";
 import { AuthService } from "./auth.service";
 import { Public } from "./constants";
+import { RES_MESSAGE } from "src/constants/common";
 
 @Public()
 @Controller("api/v1/auth")
@@ -24,7 +25,15 @@ export class AuthController {
   async register(@Body() user: Partial<User>, @Response() res) {
     const { internalCode, code, data, message } =
       await this.authService.register(user);
-    jsonResponse(res, message, data, code, internalCode);
+    console.log(
+      "this.authService.register(user)",
+      await this.authService.register(user),
+    );
+    if (internalCode !== 100) {
+      jsonResponse(res, message, data, code, internalCode);
+    } else {
+      jsonResponse(res, message, data, code, internalCode);
+    }
   }
 
   @Post("login")
@@ -39,7 +48,7 @@ export class AuthController {
         await this.authService.login(user);
       jsonResponse(res, message, data, code, internalCode);
     } else {
-      throw new UnauthorizedException("Invalid credentials");
+      jsonResponse(res, RES_MESSAGE.LOGINFAIL, {}, 200, 400);
     }
   }
 

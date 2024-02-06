@@ -16,3 +16,8 @@ export const styledInput = {
 export const styledHeading = {
   marginBottom: '1.5rem'
 }
+
+
+export const RESPONSE_MESSAGE = {
+  LOGINGAIL: "Username or password is wrong"
+}

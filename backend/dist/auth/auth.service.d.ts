@@ -1,6 +1,6 @@
-import { JwtService } from '@nestjs/jwt';
-import { User } from 'src/entities/user.entity';
-import { UsersService } from '../users/users.service';
+import { JwtService } from "@nestjs/jwt";
+import { User } from "src/entities/user.entity";
+import { UsersService } from "../users/users.service";
 export declare class AuthService {
     private readonly userService;
     private readonly jwtService;

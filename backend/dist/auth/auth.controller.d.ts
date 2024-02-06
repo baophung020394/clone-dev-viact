@@ -1,6 +1,6 @@
-import { User } from '../entities/user.entity';
-import { UsersService } from '../users/users.service';
-import { AuthService } from './auth.service';
+import { User } from "../entities/user.entity";
+import { UsersService } from "../users/users.service";
+import { AuthService } from "./auth.service";
 export declare class AuthController {
     private readonly authService;
     private readonly userService;

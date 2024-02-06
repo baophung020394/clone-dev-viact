@@ -5,6 +5,6 @@ export const getUserByToken = async (accessToken: string) => {
     const response = await axiosClient.post('/auth/verify', { accessToken: accessToken })
     return response.data
   } catch (error) {
-    // throw new Error('Registration failed')
+    console.log('error',error)
   }
 }

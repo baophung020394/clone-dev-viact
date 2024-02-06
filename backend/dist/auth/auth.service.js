@@ -27,12 +27,21 @@ let AuthService = class AuthService {
             user.password = hashedPassword;
             if (user) {
                 const result = await this.userService.create(user);
-                if (result?.code === http_status_codes_1.StatusCodes.OK)
+                if (result?.code === http_status_codes_1.StatusCodes.OK) {
                     return {
                         code: http_status_codes_1.StatusCodes.OK,
                         data: {},
                         message: common_2.RES_MESSAGE.SUCCESS,
                     };
+                }
+                else {
+                    return {
+                        code: http_status_codes_1.StatusCodes.CONFLICT,
+                        internalCode: 100,
+                        data: {},
+                        message: common_2.RES_MESSAGE.USERISEXISTED,
+                    };
+                }
             }
             return {
                 code: http_status_codes_1.StatusCodes.BAD_REQUEST,
@@ -95,10 +104,10 @@ let AuthService = class AuthService {
         try {
             if (accessToken) {
                 const verifyToken = this.jwtService.verify(accessToken);
-                console.log('verifyToken', verifyToken);
+                console.log("verifyToken", verifyToken);
                 if (verifyToken) {
                     const user = await this.userService.findUserByToken(accessToken);
-                    console.log('user', user);
+                    console.log("user", user);
                     if (user)
                         return {
                             code: http_status_codes_1.StatusCodes.OK,

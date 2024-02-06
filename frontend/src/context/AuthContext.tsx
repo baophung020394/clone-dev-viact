@@ -1,8 +1,7 @@
 // context/UserContext.tsx
 import React, { createContext, useContext, useState } from 'react'
-import { UserInfor, UserModel } from '../models/UserModel'
 import { useLocalStorage } from '../hooks/useLocalStorage'
-import { getUserByToken } from '../apis/user'
+import { UserInfor, UserModel } from '../models/UserModel'
 
 interface UserContextType {
   user: UserInfor | null
@@ -23,8 +22,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { setItem } = useLocalStorage()
 
   const setUserContext = async (user: UserModel) => {
-    const encodeAccessToken = btoa(user.accessToken || '')
-    const encodeRefreshToken = btoa(user.refreshToken || '')
+    const encodeAccessToken = btoa(user?.accessToken || '')
+    const encodeRefreshToken = btoa(user?.refreshToken || '')
 
     const userInfo = {
       accessToken: encodeAccessToken,
