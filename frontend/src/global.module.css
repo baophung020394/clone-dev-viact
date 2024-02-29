@@ -88,16 +88,6 @@
 }
 
 @media (max-width: 768px) {
-  .login-form {
-    max-width: 90%;
-    margin: 30px auto;
-  }
-
-  .register-form {
-    max-width: 90%;
-    padding: 30px 0;
-    margin: 30px auto 60px;
-  }
   .register-form .heading-small {
     margin-left: 24px;
   }
@@ -105,5 +95,23 @@
   .register-form .heading-small,
   .login-box .heading-small {
     font-size: var(--font-size-12);
+    text-align: right;
+  }
+}
+
+@media (max-width: 899px) {
+  .login-form {
+    max-width: 95%;
+    margin: 30px auto;
+  }
+
+  .register-form {
+    max-width: 95%;
+    padding: 30px 0;
+    margin: 30px auto 60px;
+  }
+
+  .register-form .register-form--right {
+    border-left: none;
   }
 }

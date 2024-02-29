@@ -30,7 +30,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
         onClick={onClick}
         variant="contained"
         fullWidth
-        // disabled={disabled}
+        disabled={disabled}
       >
         {position === "left" && icon && <IconButton>{icon}</IconButton>}
         {position === "left" && image && <img src={image} alt="Icon" />}

@@ -28,7 +28,7 @@ const Register: React.FC = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<RegisterForm>({
     resolver: yupResolver(schema),
     mode: "onBlur",
@@ -36,8 +36,6 @@ const Register: React.FC = () => {
 
   const history = useHistory();
   const [showPassword, setShowPassword] = useState(false);
-
-  const isDisabled = Object.keys(errors).length > 0;
 
   const logo = "/assets/images/logo/logo-viact.png";
 
@@ -130,6 +128,7 @@ const Register: React.FC = () => {
           md={6}
           padding={"20px"}
           borderLeft={"1px solid #EBEBEB"}
+          className={stylesGlobal["register-form--right"]}
         >
           <Grid container rowSpacing={2}>
             <Grid item xs={12}>
@@ -275,10 +274,7 @@ const Register: React.FC = () => {
           </Grid>
           <Grid container rowSpacing={1}>
             <Grid item xs={12}>
-              <CustomButton
-                className="custom-button login"
-                // disabled={isDisabled}
-              >
+              <CustomButton className="custom-button login" disabled={!isValid}>
                 Sign up
               </CustomButton>
             </Grid>

@@ -15,6 +15,7 @@ interface CustomTextFieldProps
   errors?: DeepMap<FieldValues, FieldError>;
   register?: UseFormRegister<any>;
   borderColor?: string;
+  isAutofocus?: boolean;
 }
 
 const CustomTextField: React.FC<CustomTextFieldProps> = ({
@@ -22,6 +23,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
   control,
   errors,
   borderColor,
+  isAutofocus,
   ...props
 }) => {
   return (
@@ -33,6 +35,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
         <TextField
           {...field}
           {...props}
+          autoFocus={isAutofocus}
           error={!!errors?.[name]}
           sx={{
             "& .MuiInputLabel-root": {
