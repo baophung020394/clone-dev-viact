@@ -10,29 +10,7 @@ Follow these steps to set up the Viact application locally:
 
 ### Setup
 
-1. Access mysql by terminal:
-
-   ```bash
-   mysql -u root -p
-   ```
-
-2. Create user in database:
-
-   ```bash
-   CREATE USER 'viact'@'localhost' IDENTIFIED BY 'viact';
-   ```
-3. Grant permission for user in database:
-
-   ```bash
-   GRANT ALL PRIVILEGES ON *.* TO 'viact'@'localhost';
-   ```
-4. Refresh permissions:
-
-   ```bash
-   FLUSH PRIVILEGES;
-   ```
-
-5. Go to the root directory of the cloned repository is "clone-dev-viact":
+1. Go to the root directory of the cloned repository is "clone-dev-viact":
 
    ```bash
    cd frontend
@@ -45,12 +23,16 @@ Follow these steps to set up the Viact application locally:
    ```
 
 3. Back to the root directory:
+   ```bash
+   cd ..
+   ```
 
+4. Go to the `backend`:
    ```bash
    cd backend
    ```
 
-4. Copy the `.env.example` file to `.env`:
+5. Copy the `.env.example` file to `.env`:
 
    ```bash
    cp .env.example .env
