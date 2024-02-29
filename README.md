@@ -1,7 +1,5 @@
 # Viact Application
 
-## Introduction
-
 ## Getting Started
 
 Follow these steps to set up the Viact application locally:
@@ -33,7 +31,7 @@ Follow these steps to set up the Viact application locally:
    ```bash
    FLUSH PRIVILEGES;
    ```
-   
+
 5. Go to the root directory of the cloned repository is "clone-dev-viact":
 
    ```bash
