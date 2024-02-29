@@ -1,13 +1,51 @@
+:root {
+  --primary-color: #ffffff;
+  --secondary-color: #000000;
+  --color-1: #eb5757;
+  --color-2: rgb(235, 87, 87);
+  --color-3: #4b4c4c;
+  --text-color: #fff;
+  --background-color: #000;
+  --background-color-complete: green;
+  --background-color-incomplete: red;
+  --background-color-menu: #000;
+  --font-size-12: 12px;
+  --font-size-14: 14px;
+  --font-size-16: 16px;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.custom-button .MuiButton-root {
+  color: var(--text-color);
+  height: 48px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  font-size: var(--font-size-12);
+}
+
+.custom-button .MuiButton-root img {
+  margin-right: 8px;
+}
+
+.custom-button.login .MuiButton-root {
+  background: rgb(35, 182, 216);
+}
+
+.custom-button.login-gg .MuiButton-root {
+  background: rgb(235, 87, 87);
+  display: flex;
+  align-items: center;
 }

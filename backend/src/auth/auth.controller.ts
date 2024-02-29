@@ -25,10 +25,6 @@ export class AuthController {
   async register(@Body() user: Partial<User>, @Response() res) {
     const { internalCode, code, data, message } =
       await this.authService.register(user);
-    console.log(
-      "this.authService.register(user)",
-      await this.authService.register(user),
-    );
     if (internalCode !== 100) {
       jsonResponse(res, message, data, code, internalCode);
     } else {

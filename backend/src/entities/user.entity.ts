@@ -1,6 +1,6 @@
 // src/user.entity.ts
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-import { BaseModel } from './base.entity';
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { BaseModel } from "./base.entity";
 
 @Entity()
 export class User extends BaseModel {
@@ -8,7 +8,16 @@ export class User extends BaseModel {
   id: number;
 
   @Column()
+  firstName: string;
+
+  @Column()
+  lastName: string;
+
+  @Column()
   username: string;
+
+  @Column()
+  phone: string;
 
   @Column()
   email: string;
@@ -22,10 +31,7 @@ export class User extends BaseModel {
   @Column({ nullable: true })
   refreshToken: string;
 
-  @Column({ nullable: true })
-  role: string;
-
   // 0: inactive, 1: active
-  @Column({ type: 'enum', enum: ['0', '1'], default: '1' })
+  @Column({ type: "enum", enum: ["0", "1"], default: "1" })
   status: string;
 }

@@ -1,0 +1,109 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.app {
+  background-size: cover !important;
+  background-position: 50% !important;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form {
+  max-width: 520px;
+  margin: auto;
+  background: #fff;
+  border-radius: 20px;
+  padding: 16px 16px 0 16px;
+  box-sizing: border-box;
+}
+
+.register-form {
+  max-width: 1000px;
+  width: auto;
+  margin: auto;
+  background: #fff;
+  border-radius: 20px;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+.login-box {
+  max-width: 488px;
+  margin: auto;
+}
+
+.login-box .login-box__heading {
+  max-width: 380px;
+  min-height: 113px;
+  margin: auto;
+}
+
+.logo {
+  max-width: 280px;
+  min-height: 113px;
+}
+
+.register-form .heading-small,
+.login-box .heading-small {
+  color: var(--color-1);
+  font-size: var(--font-size-16);
+  margin-left: 5px;
+}
+
+.options {
+  margin: 0 0 16px;
+}
+
+.options p a {
+  color: var(--color-2);
+  text-decoration: none;
+}
+
+.options .MuiFormControlLabel-root span {
+  font-size: var(--font-size-14);
+  font-weight: 400;
+}
+
+.input input {
+  font-size: var(--font-size-12);
+}
+
+.note {
+  margin-top: 30px;
+  list-style: none;
+}
+
+.note li {
+  color: var(--color-3);
+  font-size: var(--font-size-16);
+  margin-bottom: 30px;
+}
+
+.heading-logo {
+  padding: 0 20px;
+}
+
+@media (max-width: 768px) {
+  .login-form {
+    max-width: 90%;
+    margin: 30px auto;
+  }
+
+  .register-form {
+    max-width: 90%;
+    padding: 30px 0;
+    margin: 30px auto 60px;
+  }
+  .register-form .heading-small {
+    margin-left: 24px;
+  }
+
+  .register-form .heading-small,
+  .login-box .heading-small {
+    font-size: var(--font-size-12);
+  }
+}

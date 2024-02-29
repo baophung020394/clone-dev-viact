@@ -1,52 +1,50 @@
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Checkbox, FormControlLabel, Grid, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useHistory } from "react-router-dom";
-import { signUp } from "../../apis/auth"; // Hàm API để đăng ký
-import {
-  Button,
-  Grid,
-  IconButton,
-  InputAdornment,
-  Paper,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { yupResolver } from "@hookform/resolvers/yup"; // Resolver của yup
-import * as yup from "yup"; // Thư viện yup để validation
-import {
-  styledContainer,
-  styledHeading,
-  styledInput,
-  styledPaper,
-} from "../../constants/common";
+import * as yup from "yup";
+import { signUp } from "../../apis/auth";
+import stylesGlobal from "../../global.module.css";
+import { RegisterForm } from "../../models/UserModel";
+import CustomButton from "../common/CustomButton";
+import CustomTextField from "../common/CustomField";
+import CustomPhoneInput from "../common/CustomPhoneInput";
 
-// Schema cho yup để validation
 const schema = yup.object().shape({
+  firstName: yup.string().required("First Name is required"),
+  lastName: yup.string().required("Last Name is required"),
   username: yup.string().required("Username is required"),
+  phone: yup.string().required("Phone number is required"),
   email: yup.string().email("Invalid email").required("Email is required"),
   password: yup.string().required("Password is required"),
   confirmPassword: yup
     .string()
     .oneOf([yup.ref("password")], "Passwords must match")
     .required("Confirm Password is required"),
-  role: yup.string().required("Role is required"),
 });
 
 const Register: React.FC = () => {
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
+  } = useForm<RegisterForm>({
+    resolver: yupResolver(schema),
+    mode: "onBlur",
+  });
+
   const history = useHistory();
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = async (data: any) => {
+  const isDisabled = Object.keys(errors).length > 0;
+
+  const logo = "/assets/images/logo/logo-viact.png";
+
+  const onSubmit = async (data: RegisterForm) => {
     if (data) {
       const res = await signUp(data);
-      console.log("res", res);
-      if (res?.code === 200) history.push("/login");
+      if (res?.code === 200) history.push("/");
     }
   };
 
@@ -55,128 +53,300 @@ const Register: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Grid
-        container
-        spacing={2}
-        alignItems="center"
-        justifyContent="center"
-        style={styledContainer}
-      >
-        <Grid item xs={12} style={styledHeading}>
-          <Typography component="h4" variant="h4">
-            Register Page
-          </Typography>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className={stylesGlobal["register-form"]}
+    >
+      <Grid container>
+        <Grid item xs={12} md={6} className={stylesGlobal["heading-logo"]}>
+          <Grid
+            container
+            justifyContent="center"
+            alignItems="center"
+            className={stylesGlobal["login-box__heading"]}
+          >
+            <Grid item xs={8} md={8}>
+              <img src={logo} alt="logo" className={stylesGlobal["logo"]} />
+            </Grid>
+            <Grid
+              item
+              xs={4}
+              md={4}
+              justifyContent={"center"}
+              alignItems={"center"}
+            >
+              <Typography
+                variant="h5"
+                className={stylesGlobal["heading-small"]}
+              >
+                Automate <br />
+                Construction <br />
+                Monitoring
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid item xs={12} textAlign={"center"}>
+            <Typography
+              component={"p"}
+              fontSize={16}
+              textTransform={"uppercase"}
+              fontWeight={400}
+              letterSpacing={"0.00938em"}
+              lineHeight={1.5}
+            >
+              CREATE NEW ACCOUNT
+            </Typography>
+          </Grid>
+          <Grid item xs={12} textAlign={"center"}>
+            <Typography
+              component={"p"}
+              fontSize={20}
+              fontWeight={700}
+              letterSpacing={"0.00938em"}
+              lineHeight={1.5}
+              color={"rgb(235, 87, 87)"}
+            >
+              Build smart risk free
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <ul className={stylesGlobal["note"]}>
+              <li>
+                Understand why Viact is being used on millions of customers
+                everyday
+              </li>
+              <li>Find out if Viact is the right fit for your business</li>
+              <li>Get all your questions answered (personally)</li>
+              <li>
+                Completely risk-free with 14-day free trial and a 30-day money
+                back guarantee!
+              </li>
+            </ul>
+          </Grid>
         </Grid>
-        <Paper elevation={12} style={styledPaper}>
-          <Grid item xs={12} width="100%">
-            <TextField
-              {...register("username")}
-              label="Username"
-              fullWidth
-              variant="standard"
-              placeholder="Username"
-              error={errors.username ? true : false}
-              helperText={errors.username?.message}
-              style={styledInput}
-            />
-          </Grid>
-          <Grid item xs={12} width="100%">
-            <TextField
-              {...register("email")}
-              label="Email"
-              fullWidth
-              variant="standard"
-              placeholder="Email"
-              error={errors.email ? true : false}
-              helperText={errors.email?.message}
-              style={styledInput}
-            />
-          </Grid>
-          <Grid item xs={12} width="100%">
-            <TextField
-              {...register("password")}
-              label="Password"
-              fullWidth
-              variant="standard"
-              placeholder="Password"
-              type={showPassword ? "text" : "password"}
-              error={errors.password ? true : false}
-              helperText={errors.password?.message}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={handleTogglePasswordVisibility}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-              style={styledInput}
-            />
-          </Grid>
-          <Grid item xs={12} width="100%">
-            <TextField
-              {...register("confirmPassword")}
-              label="Confirm Password"
-              fullWidth
-              variant="standard"
-              placeholder="Confirm Password"
-              type={showPassword ? "text" : "password"}
-              error={errors.confirmPassword ? true : false}
-              helperText={errors.confirmPassword?.message}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={handleTogglePasswordVisibility}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-              style={styledInput}
-            />
-          </Grid>
-          <Grid item xs={12} width="100%">
-            <TextField
-              {...register("role")}
-              label="Role"
-              fullWidth
-              variant="standard"
-              placeholder="Role"
-              error={errors.role ? true : false}
-              helperText={errors.role?.message}
-              style={styledInput}
-            />
+        <Grid
+          item
+          xs={12}
+          md={6}
+          padding={"20px"}
+          borderLeft={"1px solid #EBEBEB"}
+        >
+          <Grid container rowSpacing={2}>
+            <Grid item xs={12}>
+              <CustomTextField
+                name="firstName"
+                label={
+                  <>
+                    First Name{" "}
+                    <Typography component={"span"} color={"red"}>
+                      *
+                    </Typography>
+                  </>
+                }
+                fullWidth
+                variant="outlined"
+                type={"text"}
+                control={control}
+                errors={errors}
+                borderColor="rgba(0, 0, 0, 0.23)"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <CustomTextField
+                name="lastName"
+                label={
+                  <>
+                    Last Name{" "}
+                    <Typography component={"span"} color={"red"}>
+                      *
+                    </Typography>
+                  </>
+                }
+                fullWidth
+                variant="outlined"
+                type={"text"}
+                control={control}
+                errors={errors}
+                borderColor="rgba(0, 0, 0, 0.23)"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <CustomTextField
+                name="username"
+                label={
+                  <>
+                    Username{" "}
+                    <Typography component={"span"} color={"red"}>
+                      *
+                    </Typography>
+                  </>
+                }
+                fullWidth
+                variant="outlined"
+                type={"text"}
+                control={control}
+                errors={errors}
+                borderColor="rgba(0, 0, 0, 0.23)"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <CustomTextField
+                name="email"
+                label={
+                  <>
+                    Email{" "}
+                    <Typography component={"span"} color={"red"}>
+                      *
+                    </Typography>
+                  </>
+                }
+                fullWidth
+                variant="outlined"
+                type={"text"}
+                control={control}
+                errors={errors}
+                borderColor="rgba(0, 0, 0, 0.23)"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <CustomPhoneInput name="phone" control={control} />
+            </Grid>
+            <Grid item xs={12}>
+              <CustomTextField
+                name="password"
+                label={
+                  <>
+                    Password{" "}
+                    <Typography component={"span"} color={"red"}>
+                      *
+                    </Typography>
+                  </>
+                }
+                fullWidth
+                variant="outlined"
+                type={showPassword ? "text" : "password"}
+                control={control}
+                errors={errors}
+                borderColor="rgba(0, 0, 0, 0.23)"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <CustomTextField
+                name="confirmPassword"
+                label={
+                  <>
+                    Confirm Password{" "}
+                    <Typography component={"span"} color={"red"}>
+                      *
+                    </Typography>
+                  </>
+                }
+                fullWidth
+                variant="outlined"
+                type={showPassword ? "text" : "password"}
+                control={control}
+                errors={errors}
+                borderColor="rgba(0, 0, 0, 0.23)"
+              />
+            </Grid>
           </Grid>
           <Grid
-            item
-            xs={12}
-            display="flex"
-            flexDirection="row"
-            justifyContent="space-between"
+            container
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            className={stylesGlobal["options"]}
           >
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              disabled={Object.keys(errors).length > 0}
-            >
-              Register
-            </Button>
-            <Link to="/login">
-              <Typography color="blue" style={{ textDecoration: "underline" }}>
-                Login
-              </Typography>
-            </Link>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  size="small"
+                  onChange={handleTogglePasswordVisibility}
+                  sx={{
+                    color: "#000",
+                    "&.Mui-checked": {
+                      color: "#EB5757",
+                    },
+                  }}
+                />
+              }
+              className={stylesGlobal["MuiFormControlLabel-root"]}
+              label="Show password"
+            />
           </Grid>
-        </Paper>
+          <Grid container rowSpacing={1}>
+            <Grid item xs={12}>
+              <CustomButton
+                className="custom-button login"
+                // disabled={isDisabled}
+              >
+                Sign up
+              </CustomButton>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Typography
+                component={"p"}
+                textAlign={"center"}
+                fontSize={13}
+                fontWeight={400}
+                mt={1}
+                maxWidth={350}
+                m={"auto"}
+              >
+                By clicking Sign up or Continue with Google, you agree to
+                viAct’s{" "}
+                <Typography
+                  component={"span"}
+                  fontSize={16}
+                  fontWeight={700}
+                  color={"rgb(235, 87, 87)"}
+                  sx={{
+                    "& a": {
+                      textDecoration: "none",
+                      color: "rgb(235, 87, 87)",
+                      fontSize: "12px",
+                      "&:hover": {
+                        textDecoration: "none",
+                      },
+                    },
+                  }}
+                >
+                  <Link to={"#"}>Terms and Conditions for Free Trial.</Link>
+                </Typography>
+              </Typography>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Typography
+                component={"p"}
+                textAlign={"center"}
+                fontSize={13}
+                fontWeight={400}
+                mt={1}
+              >
+                Already have an account?{" "}
+                <Typography
+                  component={"span"}
+                  fontSize={16}
+                  fontWeight={700}
+                  color={"rgb(235, 87, 87)"}
+                  sx={{
+                    "& a": {
+                      textDecoration: "none",
+                      color: "rgb(235, 87, 87)",
+                      fontSize: "12px",
+                      "&:hover": {
+                        textDecoration: "none",
+                      },
+                    },
+                  }}
+                >
+                  <Link to={"/"}>Login</Link>
+                </Typography>
+              </Typography>
+            </Grid>
+          </Grid>
+        </Grid>
       </Grid>
     </form>
   );

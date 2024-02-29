@@ -1,13 +1,9 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
-  Button,
+  Checkbox,
+  FormControlLabel,
   Grid,
-  IconButton,
-  InputAdornment,
-  Paper,
   Snackbar,
-  TextField,
   Typography,
 } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
@@ -16,21 +12,13 @@ import { useForm } from "react-hook-form";
 import { Link, useHistory } from "react-router-dom";
 import * as yup from "yup";
 import { signIn } from "../../apis/auth";
-import {
-  RESPONSE_MESSAGE,
-  styledContainer,
-  styledHeading,
-  styledInput,
-  styledPaper,
-} from "../../constants/common";
+import { RESPONSE_MESSAGE } from "../../constants/common";
 import { useUser } from "../../context/AuthContext";
+import stylesGlobal from "../../global.module.css";
+import CustomButton from "../common/CustomButton";
+import CustomTextField from "../common/CustomField";
+import { LoginForm } from "../../models/UserModel";
 
-interface LoginForm {
-  username: string;
-  password: string;
-}
-
-// Schema validation sử dụng yup
 const schema = yup.object().shape({
   username: yup.string().required("Username is required"),
   password: yup.string().required("Password is required"),
@@ -38,7 +26,7 @@ const schema = yup.object().shape({
 
 const Login: React.FC = () => {
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginForm>({ resolver: yupResolver(schema) });
@@ -47,6 +35,9 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [snackbarMessage, setSnackbarMessage] = React.useState("");
+
+  const logo = "/assets/images/logo/logo-viact.png";
+  const logoGG = "/assets/images/logo/icon-gg.svg";
 
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
@@ -65,7 +56,7 @@ const Login: React.FC = () => {
       }
       setUserContext(res?.data);
 
-      if (res?.data) history.push("/list");
+      if (res?.data) history.push("/thanks");
     }
   };
 
@@ -77,8 +68,24 @@ const Login: React.FC = () => {
     localStorage.clear();
   }, []);
 
+  // const [countryCode, setCountryCode] = useState<string>("");
+  // const [phoneNumber, setPhoneNumber] = useState<string>("");
+
+  // const handleCountryCodeChange = (event: SelectChangeEvent<string>) => {
+  //   setCountryCode(event.target.value as string);
+  // };
+
+  // const handlePhoneNumberChange = (
+  //   event: React.ChangeEvent<HTMLInputElement>,
+  // ) => {
+  //   setPhoneNumber(event.target.value);
+  // };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className={stylesGlobal["login-form"]}
+    >
       <Snackbar
         open={openSnackbar}
         autoHideDuration={6000}
@@ -95,73 +102,159 @@ const Login: React.FC = () => {
       </Snackbar>
       <Grid
         container
-        spacing={2}
         alignItems="center"
         justifyContent="center"
         flexDirection="column"
-        style={styledContainer}
+        className={stylesGlobal["login-box"]}
       >
-        <Grid item xs={12} style={styledHeading}>
-          <Typography component="h4" variant="h4">
-            Login Page
-          </Typography>
-        </Grid>
-        <Paper elevation={12} style={styledPaper}>
-          <Grid item xs={12} width="100%">
-            <TextField
-              {...register("username")}
-              label="Username"
-              fullWidth
-              variant="standard"
-              placeholder="Username"
-              error={!!errors.username}
-              helperText={errors.username?.message}
-              style={styledInput}
-            />
-          </Grid>
-          <Grid item xs={12} width="100%">
-            <TextField
-              {...register("password")}
-              label="Password"
-              fullWidth
-              variant="standard"
-              placeholder="Password"
-              type={showPassword ? "text" : "password"}
-              error={!!errors.password}
-              helperText={errors.password?.message}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={handleTogglePasswordVisibility}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-              style={styledInput}
-            />
+        <Grid
+          container
+          justifyContent="center"
+          alignItems="center"
+          className={stylesGlobal["login-box__heading"]}
+        >
+          <Grid item xs={9} md={9}>
+            <img src={logo} alt="logo" className={stylesGlobal["logo"]} />
           </Grid>
           <Grid
             item
-            xs={12}
-            display="flex"
-            flexDirection="row"
-            justifyContent="space-between"
+            xs={3}
+            md={3}
+            justifyContent={"center"}
+            alignItems={"center"}
           >
-            <Button type="submit" variant="contained" color="primary">
-              Login
-            </Button>
-
-            <Link to="/signup">
-              <Typography color="blue" style={{ textDecoration: "underline" }}>
-                Sign up
-              </Typography>
-            </Link>
+            <Typography variant="h5" className={stylesGlobal["heading-small"]}>
+              Automate <br />
+              Construction <br />
+              Monitoring
+            </Typography>
           </Grid>
-        </Paper>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography
+            component={"p"}
+            fontSize={16}
+            textTransform={"uppercase"}
+            fontWeight={400}
+            letterSpacing={"0.00938em"}
+            lineHeight={1.5}
+          >
+            LOGIN
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography
+            component={"p"}
+            fontSize={20}
+            fontWeight={700}
+            letterSpacing={"0.00938em"}
+            lineHeight={1.5}
+            color={"rgb(235, 87, 87)"}
+          >
+            Welcome Back
+          </Typography>
+        </Grid>
+        <Grid container padding={"30px"}>
+          <Grid container columnSpacing={1}>
+            <Grid item xs={12} mb={2}>
+              <CustomTextField
+                name="username"
+                label="Email or Username"
+                fullWidth
+                variant="outlined"
+                placeholder="Email or Username"
+                type={"text"}
+                control={control}
+                errors={errors}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <CustomTextField
+                name="password"
+                label="Password"
+                fullWidth
+                variant="outlined"
+                placeholder="Password"
+                type={showPassword ? "text" : "password"}
+                control={control}
+                errors={errors}
+              />
+            </Grid>
+          </Grid>
+          <Grid
+            container
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            className={stylesGlobal["options"]}
+          >
+            <FormControlLabel
+              control={
+                <Checkbox
+                  size="small"
+                  onChange={handleTogglePasswordVisibility}
+                  sx={{
+                    color: "#000",
+                    "&.Mui-checked": {
+                      color: "#EB5757",
+                    },
+                  }}
+                />
+              }
+              className={stylesGlobal["MuiFormControlLabel-root"]}
+              label="Show password"
+            />
+
+            <Typography component={"p"} fontWeight={700} fontSize={12}>
+              <Link to={"/"} color={"rgb(235, 87, 87)"}>
+                Forgot password?
+              </Link>
+            </Typography>
+          </Grid>
+          <Grid container rowSpacing={1}>
+            <Grid item xs={12}>
+              <CustomButton className="custom-button login">Login</CustomButton>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography component={"p"} textAlign={"center"} fontSize={12}>
+                OR
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <CustomButton className="custom-button login-gg" image={logoGG}>
+                Login with Google
+              </CustomButton>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography
+                component={"p"}
+                textAlign={"center"}
+                fontSize={13}
+                fontWeight={400}
+                mt={1}
+              >
+                Not on Viact yet?{" "}
+                <Typography
+                  component={"span"}
+                  fontSize={16}
+                  fontWeight={700}
+                  color={"rgb(235, 87, 87)"}
+                  sx={{
+                    "& a": {
+                      textDecoration: "none",
+                      color: "rgb(235, 87, 87)",
+                      "&:hover": {
+                        textDecoration: "none",
+                      },
+                    },
+                  }}
+                >
+                  <Link to={"/signup"}>Signup</Link>
+                </Typography>{" "}
+                now
+              </Typography>
+            </Grid>
+          </Grid>
+        </Grid>
       </Grid>
     </form>
   );

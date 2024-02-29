@@ -26,7 +26,6 @@ let AuthController = class AuthController {
     }
     async register(user, res) {
         const { internalCode, code, data, message } = await this.authService.register(user);
-        console.log("this.authService.register(user)", await this.authService.register(user));
         if (internalCode !== 100) {
             (0, responseHandler_1.jsonResponse)(res, message, data, code, internalCode);
         }
