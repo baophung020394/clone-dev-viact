@@ -49,7 +49,7 @@ Follow these steps to set up the Viact application locally:
 2. Start docker compose
 
    ```bash
-   docker-compose up
+   docker compose up
    ```
 
 3. Wait for the Docker containers to finish setting up.
