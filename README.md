@@ -21,15 +21,20 @@ Follow these steps to set up the Viact application locally:
 2. Create user in database:
 
    ```bash
-   CREATE USER 'viact'@'localhost' IDENTIFIED BY 'viact'
+   CREATE USER 'viact'@'localhost' IDENTIFIED BY 'viact';
    ```
 3. Grant permission for user in database:
 
    ```bash
-   GRANT ALL PRIVILEGES ON *.* TO 'viact'@'localhost'
+   GRANT ALL PRIVILEGES ON *.* TO 'viact'@'localhost';
    ```
+4. Refresh permissions:
 
-4. Go to the root directory of the cloned repository is "clone-dev-viact":
+   ```bash
+   FLUSH PRIVILEGES;
+   ```
+   
+5. Go to the root directory of the cloned repository is "clone-dev-viact":
 
    ```bash
    cd frontend
